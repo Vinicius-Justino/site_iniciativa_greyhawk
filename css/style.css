@@ -1,0 +1,242 @@
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+header, main, section, button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header, main {
+    height: 7vh;
+    width: 100vw;
+
+    flex-direction: column;
+}
+
+a {
+    color: grey;
+}
+
+main {
+    height: 93vh;
+}
+
+#painel-dm, #mesa {
+    width: max(50vw, 900px);
+    margin: 10px;
+}
+
+#painel-dm section {
+    flex-direction: column;
+}
+
+#botoes-ferramentas {
+    height: 100%;
+    width: 20%;
+    
+    justify-content: space-evenly;
+    gap: 15px;
+}
+
+#botoes-ferramentas button {
+    height: 20%;
+    width: 90%;
+
+    transition: height 0.5s, width 0.5s;
+
+    padding: 10px;
+    justify-content: space-around;
+    background-color: white;
+}
+
+#botoes-ferramentas button:hover {
+    height: 25%;
+    width: 95%;
+}
+
+#botoes-ferramentas button span {
+    width: 90%;
+    text-align: center;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+#conteudo-ferramenta {
+    height: 100%;
+    width: 60%;
+
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+}
+
+#conteudo-ferramenta > section {
+    height: 100%;
+    width: 100%;
+}
+
+h2 {
+    width: 100%;
+    text-align: center;
+
+    padding: 5px;
+}
+
+#conteudo-adicionar-personagem > span {
+    width: 100%;
+    margin: 2px 0px;
+}
+
+#conteudo-adicionar-personagem > span > label {
+    width: 250px;
+    text-align: right;
+
+    display: inline-block;
+}
+
+#conteudo-adicionar-personagem > span > span > label {
+    font-size: 12px;
+}
+
+
+#conteudo-definir-acoes {
+    width: 100%;
+
+    gap: 10px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    max-width: 300px;
+    padding: 3px;
+
+    border: 2px solid black;
+    text-align: center;
+}
+
+#conteudo-definir-acoes div {
+    width: 100%;
+}
+
+#personagens-selecionados {
+    display: inline-block;
+
+    max-height: 50px;
+    overflow-inline: scroll;
+}
+
+#conteudo-definir-acoes button {
+    display: inline-block;
+    height: 30px;
+    padding: 5px;
+}
+
+#conteudo-definir-acoes div input {
+    height: 30px;
+}
+
+#rolar-iniciativa {
+    width: 20%;
+}
+
+#rolar-iniciativa button {
+    height: 80%;
+    width: 80%;
+
+    transition: height 1s, width 1s;
+
+    border: none;
+    background-color: white;
+}
+
+#rolar-iniciativa button:hover {
+    height: 100%;
+    width: 100%;
+}
+
+#rolar-iniciativa button figure {
+    width: 90%;
+}
+
+#img-dado {
+    width: 100%;
+    rotate: 0deg;
+    transition: rotate 1s;
+}
+
+#rolar-iniciativa button figure figcaption {
+    width: 100%;
+    border-radius: 25px;
+
+    padding: 10px;
+    color: white;
+    background-color: red;
+    font-weight: bold;
+}
+
+#mesa {
+    height: 50vh;
+
+    border: 3px solid chocolate;
+    background-color: burlywood;
+
+    justify-content: space-evenly;
+    align-items: baseline;
+    flex-wrap: wrap;
+    overflow-inline: scroll;
+}
+
+.card {
+    height: 23vh;
+    width: max(8vw, 160px);
+
+    margin: 1vh;
+
+    border-radius: 24px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+.card img {
+    width: 50%;
+}
+
+.card p {
+    font-size: 12px;
+}
+
+.jogador {
+    background-color: cadetblue;
+}
+
+.inimigo {
+    background-color: orangered;
+}
+
+.nome {
+    font-weight: bold;
+}
+
+.vida, .modificador {
+    transition: font-size 1s;
+}
+
+.vida:hover, .modificador:hover {
+    font-size: 16px;
+}
