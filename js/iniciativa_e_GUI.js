@@ -359,9 +359,6 @@ function organiza_iniciativas() {
 
         do {
             let card_comparado = iniciativa_organizada.shift();
-            if (iniciativa_organizada.length == 0) {
-                iniciativa_organizada = lista_cards_comparados.concat([card_comparado, card_atual]);   
-            }
 
             if (card_atual.iniciativa < card_comparado.iniciativa) {
                 iniciativa_organizada = lista_cards_comparados.concat([card_atual, card_comparado], iniciativa_organizada);
@@ -369,8 +366,10 @@ function organiza_iniciativas() {
                 if (card_atual.dex >= card_comparado.dex) {
                     iniciativa_organizada = lista_cards_comparados.concat([card_atual, card_comparado], iniciativa_organizada);
                 } else {
-                    iniciativa_organizada = lista_cards_comparados.concat([card_comparado, card_atual], iniciativa_organizada);
+                    lista_cards_comparados.push(card_comparado);
                 }
+            } else if (iniciativa_organizada.length == 0) {
+                iniciativa_organizada = lista_cards_comparados.concat([card_comparado, card_atual]);
             } else {
                 lista_cards_comparados.push(card_comparado);
             }
