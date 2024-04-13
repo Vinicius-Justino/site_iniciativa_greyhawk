@@ -178,28 +178,20 @@ function card_clicado(card) {
             break;
 
         case "apagar-personagens":
-            [cards_na_mesa, cards_selecionados].forEach(function(value) {
-                if (value.includes(card.id)) {
-                    remover_do_array(card.id, value);
+            let quantidade_cards = cards_na_mesa.length;
+            for (let i = 0; i < quantidade_cards; i++) {
+                let id_card_atual = cards_na_mesa.shift();
+
+                if (id_card_atual != card.id) {
+                    cards_na_mesa.push(id_card_atual);
                 }
-            });
+            }
 
             mesa.removeChild(card);
             break;
     }
 
     atualiza_cards_selecionados();
-}
-
-function remover_do_array(item, lista) {
-    let lista_atualizada = [];
-
-    lista.forEach(function(value) {
-        if (value != item) {
-            lista_atualizada.push(value);
-        }
-    });
-    lista = lista_atualizada.slice();
 }
 
 function limpar_selecao() {
@@ -277,7 +269,6 @@ function rolar_iniciativa() {
     });
     
     organiza_iniciativas();
-    console.log(iniciativa_organizada);
 
     organiza_cards();
 }
