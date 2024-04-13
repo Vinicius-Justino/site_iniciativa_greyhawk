@@ -196,7 +196,7 @@ th, td {
 }
 
 .card {
-    height: 23vh;
+    height: max(23vh, 210px);
     width: max(8vw, 160px);
 
     margin: 1vh;
