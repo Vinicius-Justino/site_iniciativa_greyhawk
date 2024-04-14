@@ -125,7 +125,8 @@ function adiciona_personagem(tipo) {
                     let nome_card = `${document.getElementById("cx_nome").value}` + ((quantidade_cards > 1) ? `-${i + 1}` : "");
                     stat.innerText = `Nome: ${nome_card}`;
 
-                    card_personagem.id = `${nome_card.split("-")[0]}-${cont_cards}`;
+                    let nome_kebab_case = nome_card.split("-")[0].split(" ").join("-");
+                    card_personagem.id = `${nome_kebab_case}-${cont_cards}`;
                     break;
                 
                 case "vida":
