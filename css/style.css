@@ -240,3 +240,46 @@ th, td {
 .vida:hover, .modificador:hover {
     font-size: 16px;
 }
+
+@media screen and (max-width: 950px) {
+    header, .card img, h2 {
+        display: none;
+    }
+
+    main {
+        justify-content: flex-start;
+    }
+
+    #painel-dm {
+        height: 50vh;
+        flex-shrink: 0;
+    }
+
+    td, th {
+        font-size: 12px;
+        padding: 1px;
+    }
+
+    #personagens-selecionados {
+        font-size: 12px;
+        max-height: 20px;
+    }
+
+    #mesa {
+        width: 92vw;
+        height: 92vh;
+
+        flex-shrink: 0;
+    }
+
+    .card {
+        height: 40vh;
+        width: 20vw;
+
+        margin: 1vw;
+    }
+
+    .vida, .modificador {
+        font-size: 16px;
+    }
+}
