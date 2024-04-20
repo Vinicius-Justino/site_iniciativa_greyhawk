@@ -52,18 +52,14 @@ function prepara_sessao_adicionar_personagem(tipo) {
 function troca_titulo_sessao(ferramenta) {
     let titulo_sessao = document.getElementById("nome-sessao");
 
-    let pares_ferramenta_titulo = [
-        ["adicionar-jogador", "Adicionar Jogador"],
-        ["adicionar-inimigo", "Adicionar Inimigo"],
-        ["definir-acoes", "Definir Ações"],
-        ["apagar-personagens", "Apagar Personagens"]
-    ];
-
-    pares_ferramenta_titulo.forEach(function(value) {
-        if (ferramenta == value[0]) {
-            titulo_sessao.innerText = value[1];
-        }
-    });
+    let pares_ferramenta_titulo = {
+        "adicionar-jogador": "Adicionar Jogador",
+        "adicionar-inimigo": "Adicionar Inimigo",
+        "definir-acoes": "Definir Ações",
+        "definir-subordinados": "Definir Subordinados",
+        "apagar-personagens": "Apagar Personagens"
+    };
+    titulo_sessao.innerText = pares_ferramenta_titulo[ferramenta];
 }
 
 function troca_conteudo(ferramenta) {
@@ -116,7 +112,7 @@ function adiciona_personagem(tipo) {
         card_personagem.appendChild(img_card);
 
         let bloco_stats = document.createElement("div");
-        ["nome", "vida", "iniciativa", "dex", "modificador", "acao"].forEach(function(value) {
+        ["nome", "vida", "iniciativa", "dex", "bonus", "modificador", "lider", "acao"].forEach(function(value) {
             let stat = document.createElement("p");
             stat.className = value;
 
@@ -134,6 +130,10 @@ function adiciona_personagem(tipo) {
                     let vida = (!(campo_vida.disabled || campo_vida.value == "")) ? `${campo_vida.value}/${campo_vida.value}` : "n/a";
                     stat.innerText = `HP: ${vida}`;
 
+                    if (vida == "n/a") {
+                        break;
+                    }
+
                     stat.ondblclick = function() {
                         atualiza_vida(stat);
                     };
@@ -147,11 +147,27 @@ function adiciona_personagem(tipo) {
                     stat.innerText = `Dex: ${document.getElementById("cx_dex").value}`;
                     break;
 
+                case "bonus":
+                    stat.innerText = `Bônus: ${document.querySelector('input[name="bonus-iniciativa"]:checked').value}`;
+
+                    stat.ondblclick = function() {
+                        atualiza_modificador(stat);
+                    }
+                    break;
+
                 case "modificador":
                     stat.innerText = `Mod: ${document.querySelector('input[name="modificador-iniciativa"]:checked').value}`;
 
                     stat.ondblclick = function() {
                         atualiza_modificador(stat);
+                    };
+                    break;
+
+                case "lider":
+                    stat.innerText = "Líder: nenhum";
+
+                    stat.ondblclick = function() {
+                        stat.innerText = "Líder: nenhum";
                     };
                     break;
 
@@ -173,6 +189,7 @@ function adiciona_personagem(tipo) {
 function card_clicado(card) {
     switch (ferramenta_atual) {
         case "definir-acoes":
+        case "definir-subordinados":
             if (!cards_selecionados.includes(card.id)) {
                 cards_selecionados.push(card.id);
             }
@@ -202,15 +219,27 @@ function limpar_selecao() {
 }
 
 function atualiza_cards_selecionados() {
-    let lista_personagens_selecionados = document.getElementById("personagens-selecionados");
-    lista_personagens_selecionados.innerText = "Personagens selecionados: ";
+    let lista_personagens_selecionados;
+    switch (ferramenta_atual) {
+        case "definir-acoes":
+            lista_personagens_selecionados = document.getElementById("personagens-selecionados");
+            lista_personagens_selecionados.innerText = "Personagens selecionados: ";
+            break;
 
-    if (cards_selecionados == []) {
-        lista_personagens_selecionados.innerText += "nenhum";
-        return;
+        case "definir-subordinados":
+            let nome_lider = (cards_selecionados.length > 0) ? document.querySelector(`#${cards_selecionados[0]} .nome`).innerText.substring(6) : "";
+            document.getElementById("lider").innerText = `Líder: ${nome_lider}`;
+
+            lista_personagens_selecionados = document.getElementById("subordinados");
+            lista_personagens_selecionados.innerText = "Subordinados: ";
+            break;
     }
 
-    cards_selecionados.forEach(function(value) {
+    cards_selecionados.forEach(function(value, index) {
+        if (ferramenta_atual == "definir-subordinados" && index == 0) {
+            return;
+        }
+
         let nome_card = document.querySelector(`#${value} .nome`).innerText.substring(6);
         lista_personagens_selecionados.innerText += ` ${nome_card}`;
     });
@@ -226,13 +255,23 @@ function atualiza_vida(p_vida) {
 }
 
 function atualiza_modificador(p_modificador) {
+    let valores_validos = [];
+    switch (p_modificador.className) {
+        case "bonus":
+            valores_validos = ["bonus", "nenhum", "penalidade"];
+            break;
+
+        case "modificador":
+            valores_validos = ["vantagem", "nenhum", "desvantagem"];
+    }
+
     let novo_mod;
 
     do {
-        novo_mod = prompt("Novo modificador de iniciativa: (vantagem, nenhum ou desvantagem)");
-    } while(!["vantagem", "nenhum", "desvantagem"].includes(novo_mod.toLowerCase()));
+        novo_mod = prompt(`Novo modificador de iniciativa: (${valores_validos.join(", ")})`);
+    } while(!valores_validos.includes(novo_mod.toLowerCase()));
 
-    p_modificador.innerText = `${p_modificador.innerText.split(" ")[0]} ${novo_mod.toLowerCase()}`;
+    p_modificador.innerText = `${p_modificador.innerText.split(":")[0]}: ${novo_mod.toLowerCase()}`;
 }
 
 function definir_acao() {
@@ -257,6 +296,20 @@ function definir_acao() {
     });
 }
 
+function definir_subordinados() {
+    if (cards_selecionados.length < 2) {
+        return;
+    }
+
+    let lider = cards_selecionados.shift();
+
+    cards_selecionados.forEach(function(value) {
+        document.querySelector(`#${value} .lider`).innerText = `Líder: ${lider}`;
+    });
+
+    limpar_selecao();
+}
+
 
 let cards_ativos, cards_inativos;
 function rolar_iniciativa() {
@@ -269,6 +322,7 @@ function rolar_iniciativa() {
         calcula_iniciativa_individual(value);
     });
     
+    atrasa_subordinados();
     organiza_iniciativas();
 
     organiza_cards();
@@ -309,30 +363,74 @@ function calcula_iniciativa_individual(id_card) {
     }
 
     card.iniciativa = 0;
+    let maior_dado = 0;
     partes_acao[1].split("").forEach(function(value) {
         let valor_adicional = valores_adicionais[value];
 
         if (valor_adicional.includes("d")) {
-            card.iniciativa += (Math.floor(Math.random() * 1000) % parseInt(valor_adicional.substring(1))) + 1;
+            valor_adicional = parseInt(valor_adicional.substring(1));
+
+            if (valor_adicional > maior_dado) {
+                card.iniciativa += (maior_dado != 0) ? ((Math.floor(Math.random() * 1000) % maior_dado) + 1) : 0;
+
+                maior_dado = valor_adicional;
+                return;
+            }
+
+            card.iniciativa += (Math.floor(Math.random() * 1000) % valor_adicional) + 1;
         } else {
             card.iniciativa += parseInt(valor_adicional);
         }
     });
 
-    acao_card.innerText = `${partes_acao[0]}: `; 
+    acao_card.innerText = `${partes_acao[0]}: `;
 
-    let modificador_iniciativa = document.querySelector(`#${card.id} .modificador`).innerText.split(" ")[1];
-    switch (modificador_iniciativa) {
-        case "vantagem":
-            card.iniciativa -= 2;
-            break;
+    if (maior_dado != 0) {
+        let bonus_iniciativa = document.querySelector(`#${card.id} .bonus`).innerText.split(" ")[1];
+        switch (bonus_iniciativa) {
+            case "bonus":
+                maior_dado -= 2;
+                break;
 
-        case "desvantagem":
-            card.iniciativa += 2;
+            case "penalidade":
+                maior_dado += 2;
+        }
+
+        let modificador_iniciativa = document.querySelector(`#${card.id} .modificador`).innerText.split(" ")[1];
+        let primeira_rolagem = (Math.floor(Math.random() * 1000) % maior_dado) + 1;
+        switch (modificador_iniciativa) {
+            case "vantagem":
+                card.iniciativa += Math.min(primeira_rolagem, ((Math.floor(Math.random() * 1000) % maior_dado) + 1));
+                break;
+
+            case "nenhum":
+                card.iniciativa += primeira_rolagem;
+                break;
+
+            case "desvantagem":
+                card.iniciativa += Math.max(primeira_rolagem, ((Math.floor(Math.random() * 1000) % maior_dado) + 1));
+                break;
+        }
     }
 
     document.querySelector(`#${card.id} .iniciativa`).innerText = `Iniciativa: ${card.iniciativa}`;
     cards_ativos.push(card);
+}
+
+function atrasa_subordinados() {
+    cards_ativos.forEach(function(value) {
+        let card_atual = value;
+        let id_lider = document.querySelector(`#${card_atual.id} .lider`).innerText.split(" ")[1];
+        if (id_lider == "nenhum") {
+            return;
+        }
+
+        for (let i = 0; i < cards_ativos.length; i++) {
+            card_atual.iniciativa += (cards_ativos[i].id == id_lider) ? cards_ativos[i].iniciativa : 0;
+        }
+
+        document.querySelector(`#${card_atual.id} .iniciativa`).innerText = `Iniciativa: ${card_atual.iniciativa}`;
+    });
 }
 
 let iniciativa_organizada;

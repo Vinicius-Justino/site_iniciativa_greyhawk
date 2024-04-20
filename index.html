@@ -19,8 +19,9 @@
         <section id="painel-dm">
             <section id="botoes-ferramentas">
                 <button onclick="troca_ferramenta('adicionar-jogador')"> <img src="./img/nova_carta.svg"> <span>Novo jogador</span> </button>
-                <button onclick="troca_ferramenta('adicionar-inimigo')"> <img src="./img/nova_carta.svg"> <span>Novo monstro</span> </button>
-                <button onclick="troca_ferramenta('definir-acoes')"> <img src="./img/dice-6.svg"> <span>Definir ações</span> </button>
+                <button onclick="troca_ferramenta('adicionar-inimigo')"> <img src="./img/nova_carta.svg"> <span>Novo inimigo</span> </button>
+                <button onclick="limpar_selecao(); troca_ferramenta('definir-acoes')"> <img src="./img/dice-6.svg"> <span>Definir ações</span> </button>
+                <button onclick="limpar_selecao(); troca_ferramenta('definir-subordinados')"> <img src="./img/award.svg"> <span>Definir subornidos</span> </button>
                 <button onclick="limpar_selecao(); troca_ferramenta('apagar-personagens')"> <img src="./img/trash3.svg"> <span>Apagar personagens</span> </button>
             </section>
             
@@ -31,11 +32,15 @@
                     <span> <label for="cx_dex">Destreza bruta: </label> <input type="number" id="cx_dex"> </span>
                     <span> <label for="cx_vida">HP máximo: </label> <input type="number" id="cx_vida"> </span>
                     <span> <label for="cx_quantidade">Quantidade: </label> <input type="number" id="cx_quantidade"> </span>
-                    <span> <label>Modificador de iniciativa: </label> <span>
+                    <span> <label>Modificador de iniciativa: </label> <div id="container-radios">
+                        <input type="radio" name="bonus-iniciativa" value="bonus"> <label>Bônus</label>
+                        <input type="radio" name="bonus-iniciativa" value="nenhum" checked="checked"> <label>Nenhum</label>
+                        <input type="radio" name="bonus-iniciativa" value="penalidade"> <label>Penalidade</label>
+                        <br>
                         <input type="radio" name="modificador-iniciativa" value="vantagem"> <label>Vantagem</label>
                         <input type="radio" name="modificador-iniciativa" value="nenhum" checked="checked"> <label>Nenhum</label>
                         <input type="radio" name="modificador-iniciativa" value="desvantagem"> <label>Desvantagem</label>
-                    </span> </span>
+                    </div> </span>
                     <button onclick="adiciona_personagem('placeholder')" style="height: 30px; padding: 5px; margin: 10px;">Adicionar</button>
                 </section>
 
@@ -61,9 +66,19 @@
                         </tr>
                     </table>
                     <div>
-                        <p id="personagens-selecionados">Personagens selecionados: nenhum</p> <button onclick="limpar_selecao()">Limpar Seleção</button> <br>
+                        <p id="personagens-selecionados">Personagens selecionados: </p> <br>
                         <label for="acao">Códigos da ação: </label> <input type="text" placeholder="Ex: rmm!" id="acao">
                         <button onclick="definir_acao()">Definir ação</button>
+                        <button onclick="limpar_selecao()">Limpar Seleção</button>
+                    </div>
+                </section>
+
+                <section id="conteudo-definir-subordinados" style="display: none;">
+                   <p id="lider">Líder: </p>
+                   <p id="subordinados">Subordinados: </p>
+                   <div>
+                        <button onclick="definir_subordinados()">Definir subordinados</button>
+                        <button onclick="limpar_selecao()">Limpar Seleção</button>
                     </div>
                 </section>
 

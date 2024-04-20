@@ -12,10 +12,11 @@ header, main, section, button {
 }
 
 header, main {
-    height: 7vh;
+    height: max(7vh, 100px);
     width: 100vw;
 
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 a {
@@ -24,11 +25,13 @@ a {
 
 main {
     height: 93vh;
+    justify-content: flex-start;
 }
 
 #painel-dm, #mesa {
     width: max(50vw, 900px);
     margin: 10px;
+    flex-shrink: 0;
 }
 
 #painel-dm section {
@@ -40,23 +43,16 @@ main {
     width: 20%;
     
     justify-content: space-evenly;
-    gap: 15px;
+    gap: 5px;
 }
 
 #botoes-ferramentas button {
     height: 20%;
     width: 90%;
 
-    transition: height 0.5s, width 0.5s;
-
     padding: 10px;
     justify-content: space-around;
     background-color: white;
-}
-
-#botoes-ferramentas button:hover {
-    height: 25%;
-    width: 95%;
 }
 
 #botoes-ferramentas button span {
@@ -91,6 +87,10 @@ h2 {
 #conteudo-adicionar-personagem > span {
     width: 100%;
     margin: 2px 0px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 #conteudo-adicionar-personagem > span > label {
@@ -100,8 +100,10 @@ h2 {
     display: inline-block;
 }
 
-#conteudo-adicionar-personagem > span > span > label {
+#container-radios {
+    display: inline-block;
     font-size: 12px;
+    line-height: 20px;
 }
 
 
@@ -134,7 +136,7 @@ th, td {
     overflow-inline: scroll;
 }
 
-#conteudo-definir-acoes button {
+#conteudo-definir-acoes button, #conteudo-definir-subordinados button  {
     display: inline-block;
     height: 30px;
     padding: 5px;
@@ -142,6 +144,22 @@ th, td {
 
 #conteudo-definir-acoes div input {
     height: 30px;
+}
+
+#conteudo-definir-subordinados {
+    width: 95% !important;
+
+    gap: 10px;
+}
+
+#conteudo-definir-subordinados p {
+    width: 100%;
+    max-height: 50px;
+    overflow: scroll;
+}
+
+#conteudo-definir-subordinados button {
+    margin: 10px;
 }
 
 #rolar-iniciativa {
@@ -184,7 +202,7 @@ th, td {
 }
 
 #mesa {
-    height: 50vh;
+    height: max(50vh, 500px);
 
     border: 3px solid chocolate;
     background-color: burlywood;
@@ -214,7 +232,7 @@ th, td {
 }
 
 .card img {
-    width: 50%;
+    width: 40%;
 }
 
 .card p {
@@ -233,11 +251,11 @@ th, td {
     font-weight: bold;
 }
 
-.vida, .modificador {
+.vida, .bonus, .modificador, .lider {
     transition: font-size 1s;
 }
 
-.vida:hover, .modificador:hover {
+.vida:hover, .bonus:hover, .modificador:hover, .lider:hover {
     font-size: 16px;
 }
 
@@ -246,13 +264,9 @@ th, td {
         display: none;
     }
 
-    main {
-        justify-content: flex-start;
-    }
-
     #painel-dm {
         height: 50vh;
-        flex-shrink: 0;
+        min-width: 100vw;
     }
 
     td, th {
@@ -268,8 +282,6 @@ th, td {
     #mesa {
         width: 92vw;
         height: 92vh;
-
-        flex-shrink: 0;
     }
 
     .card {
@@ -279,7 +291,7 @@ th, td {
         margin: 1vw;
     }
 
-    .vida, .modificador {
+    .vida, .bonus, .modificador, .lider {
         font-size: 16px;
     }
 }
